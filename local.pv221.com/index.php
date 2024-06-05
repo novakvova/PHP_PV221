@@ -1,24 +1,6 @@
 <?php
-// Database credentials
-$host = 'localhost';
-$dbname = 'local.pv221.com';
-$username = 'root';
-$password = '123456';
-
-// Connection string
-$dsn = "mysql:host=$host;dbname=$dbname";
-
-// Attempt to connect
-try {
-    $pdo = new PDO($dsn, $username, $password);
-    // Set PDO to throw exceptions on errors
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully";
-} catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-}
+include_once $_SERVER["DOCUMENT_ROOT"]."/connection_database.php";
 ?>
-
 
 <!doctype html>
 <html lang="en">
@@ -32,8 +14,10 @@ try {
 </head>
 <body>
 <main>
+
     <div class="container">
         <h1>Користувачі</h1>
+        <a class="btn btn-success" href="/create.php">Додати</a>
         <table class="table">
             <thead>
             <tr>
@@ -50,9 +34,10 @@ try {
             foreach ($pdo->query($sql) as $row) {
                 $id = $row['id'];
                 $name = $row['name'];
-                $image = $row['image'];
+                $image = "/".MEDIA."/".$row['image'];
                 $email = $row['email'];
                 $phone = $row['phone'];
+
                 echo "
             <tr>
                 <th scope='row'>$id</th>
