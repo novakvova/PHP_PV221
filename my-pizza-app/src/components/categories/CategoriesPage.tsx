@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {ICategoryItem} from "./types.ts";
 
 const CategoriesPage: React.FC = () => {
-    const [list, setList] = useState<ICategoryItem[]>(
+    const [list] = useState<ICategoryItem[]>(
         [
             {
                 id: 1,
@@ -47,9 +47,7 @@ const CategoriesPage: React.FC = () => {
                             <div className="font-bold text-xl mb-2 text-center">{item.name}</div>
                         </div>
                     </div>
-
                 ))}
-
             </div>
 
         </div>
