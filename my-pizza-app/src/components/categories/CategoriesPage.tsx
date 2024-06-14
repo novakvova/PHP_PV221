@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ICategoryItem} from "./types.ts";
+import axios from "axios";
 
 const CategoriesPage: React.FC = () => {
     const [list] = useState<ICategoryItem[]>(
@@ -32,6 +33,27 @@ const CategoriesPage: React.FC = () => {
 
         ]
     );
+
+    useEffect(() => {
+        axios.get("http://127.0.0.1:8000/api/categories")
+            .then(resp => {
+                console.log("Resp data", resp.data);
+            });
+
+        axios.post("http://127.0.0.1:8000/api/categories",
+            {
+                name: "Крокодил",
+                image: "test"
+            }, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+            })
+            .then(resp => {
+                console.log("Resp data", resp.data);
+            });
+
+    },[]);
 
     return (
         <div className={"md:container mx-auto"}>
