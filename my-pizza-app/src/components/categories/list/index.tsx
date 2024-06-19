@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {ICategoryItem} from "./types.ts";
-import http_common from "../../http_common.ts";
+import http_common from "../../../http_common.ts";
 
 
-const CategoriesPage: React.FC = () => {
+const CategoriesListPage: React.FC = () => {
     const [list] = useState<ICategoryItem[]>(
         [
             {
@@ -77,4 +77,4 @@ const CategoriesPage: React.FC = () => {
     );
 }
 
-export default CategoriesPage;
+export default CategoriesListPage;

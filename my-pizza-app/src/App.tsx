@@ -1,13 +1,19 @@
-import './App.css'
-// import LoginPage from "./components/login/LoginPage.tsx";
-import CategoriesPage from "./components/categories/CategoriesPage.tsx";
+import './App.css';
+import {Route, Routes} from "react-router-dom";
+import Layout from "./components/layout";
+import CategoriesListPage from "./components/categories/list";
 
 function App() {
 
   return (
       <>
-          {/*<LoginPage/>*/}
-          <CategoriesPage/>
+          <Routes>
+              <Route path="/" element={<Layout />}>
+                  <Route index element={<CategoriesListPage/>} />
+                  {/*<Route path="category-table" element={<CategoryTable/>} />*/}
+                  {/*<Route path="create-edit/:id" element={<CreateEditCategory/>} />*/}
+              </Route>
+          </Routes>
       </>
   )
 }
