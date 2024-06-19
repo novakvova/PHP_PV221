@@ -14,7 +14,7 @@ import { useLocation } from 'react-router-dom'
 
 const navigation = [
     { name: 'Головна', href: '/', current: true },
-    { name: 'Категорії', href: '/category-table', current: false },
+    { name: 'Категорії', href: '/categories', current: false },
 
 ]
 
