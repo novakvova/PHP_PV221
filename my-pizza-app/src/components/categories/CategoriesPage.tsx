@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ICategoryItem} from "./types.ts";
-import axios from "axios";
+import http_common from "../../http_common.ts";
+
 
 const CategoriesPage: React.FC = () => {
     const [list] = useState<ICategoryItem[]>(
@@ -35,12 +36,12 @@ const CategoriesPage: React.FC = () => {
     );
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/api/categories")
+        http_common.get("/api/categories")
             .then(resp => {
                 console.log("Resp data", resp.data);
             });
 
-        axios.post("http://127.0.0.1:8000/api/categories",
+        http_common.post("/api/categories",
             {
                 name: "Крокодил",
                 image: "test"
