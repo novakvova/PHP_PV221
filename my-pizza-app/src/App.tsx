@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import Layout from "./components/layout";
 import HomePage from "./components/home";
 import CategoriesListPage from "./components/categories/list";
+import CategoriesCreatePage from "./components/categories/create";
 
 function App() {
 
@@ -13,7 +14,7 @@ function App() {
                   <Route index element={<HomePage/>} />
                   <Route path={"categories"}  >
                     <Route index element={<CategoriesListPage/>} />
-                    <Route path={"add"} element={<CategoriesListPage/>} />
+                    <Route path={"create-edit/:id"} element={<CategoriesCreatePage/>} />
                   </Route>
 
                   {/*<Route path="category-table" element={<CategoryTable/>} />*/}
