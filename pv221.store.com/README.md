@@ -8,6 +8,8 @@ php artisan make:model Category -m
 
 php artisan migrate
 
+php artisan make:controller Api/ProductController
+
 php artisan install:api
 
 php artisan serve
