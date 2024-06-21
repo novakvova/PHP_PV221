@@ -4,6 +4,8 @@
 
 php artisan make:model Category -m
 
+php artisan migrate
+
 php artisan install:api
 
 php artisan serve
