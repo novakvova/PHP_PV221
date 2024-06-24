@@ -16,7 +16,8 @@ const CategoriesListPage: React.FC = () => {
         (async () => {
             const response = await categoryService.getAll();
             if (response.status === 200) {
-                setTable(response.data)
+                console.log("data", response.data);
+                setTable(response.data.data)
             }
         })()
     }, [])

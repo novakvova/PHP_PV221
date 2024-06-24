@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 import { imageUrl } from '../../../helpers/constants';
 import PageHeader from "../../common/page-header";
+import {ICategoryCreate} from "./types.ts";
 
 
 const CategoriesCreatePage: React.FC = () => {
@@ -32,17 +33,19 @@ const CategoriesCreatePage: React.FC = () => {
     },[]);
 
     const onSubmit = async (data: FieldValues) => {
-        const formData = new FormData();
-        formData.append('name', data.name);
-        if (data.image.length > 0)
-            formData.append('image', data.image[0]);
+
+        const model: ICategoryCreate = {
+            name: data.name,
+            image: data.image[0]
+        };
+
         let result;
 
         if(id===0){
-            result = await categoryService.create(formData);
+            result = await categoryService.create(model);
         }
         else{
-            result = await categoryService.update(formData,id);
+            result = await categoryService.update(model,id);
         }
 
         if (result?.status === 201 || result?.status === 200) {
