@@ -39,10 +39,25 @@ class CategoryController extends Controller
     {
         $this-> upload = env('UPLOAD_DIR');
     }
-    public function getAll(): \Illuminate\Http\JsonResponse
+    //по категоріях зробити пошук і пагінацію.
+    public function getAll(Request $request) //: \Illuminate\Http\JsonResponse
     {
-        $items = Category::all();
-        return response()->json($items) ->header('Content-Type', 'application/json; charset=utf-8');
+        $perPage = intval($request->query('perPage',2));
+        $search = $request->query('search');
+        $page = $request->query('page',1);
+        $query = Category::query();
+        if($search){
+            $query-> where('name', 'like', '%'.$search.'%');
+        }
+        $data = $query->paginate($perPage, ['*'], 'page', $page);
+        $json = json_encode($data);
+        $dataSize = strlen($json);
+         return response($json, 200)
+                ->header('Content-Type', 'application/json')
+               ->header('Content-Length', $dataSize)
+               ->header('Accept-Ranges', 'bytes');
+//        $items = Category::all();
+//        return response()->json($items) ->header('Content-Type', 'application/json; charset=utf-8');
     }
 
     public function create(Request $request): \Illuminate\Http\JsonResponse
