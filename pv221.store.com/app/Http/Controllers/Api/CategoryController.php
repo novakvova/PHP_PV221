@@ -40,7 +40,7 @@ class CategoryController extends Controller
         $this-> upload = env('UPLOAD_DIR');
     }
     //по категоріях зробити пошук і пагінацію.
-    public function getAll(Request $request) //: \Illuminate\Http\JsonResponse
+    public function getAll(Request $request) : \Illuminate\Http\Response //\Illuminate\Http\JsonResponse
     {
         $perPage = intval($request->query('perPage',2));
         $search = $request->query('search');

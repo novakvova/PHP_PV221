@@ -1,26 +1,49 @@
 import { Card, Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react'
-import { ICategoryItem } from './types';
+import {ICategoryItem, ICategorySearch} from './types';
 import { categoryService } from '../../../services/CategoryService';
 import { imageUrl } from '../../../helpers/constants';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import {Pagination, PaginationProps} from "antd";
 
 
 const TABLE_HEAD = ["id", "Фото", "Назва", ""];
 
 
 const CategoriesListPage: React.FC = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [total, setTotal] = useState<number>(0);
+
+    const [search, setSearch] = useState<ICategorySearch>(
+        {
+            search: searchParams.get("search")||"",
+            perPage: 2,
+            page: 1
+        }
+    );
+
     const [table, setTable] = useState<ICategoryItem[]>([]);
     const navigate = useNavigate()
+
+    const loadData = async()=>{
+        const text: string | null = searchParams.get("search")||"";
+        const response = await categoryService.getAll({...search, search: text});
+        if (response.status === 200) {
+            setTotal(response.data.total)
+            setTable(response.data.data)
+        }
+    }
+
     useEffect(() => {
         (async () => {
-            const response = await categoryService.getAll();
-            if (response.status === 200) {
-                console.log("data", response.data);
-                setTable(response.data.data)
-            }
+            await loadData();
         })()
-    }, [])
+    }, [searchParams])
+
+    const onPaginationChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
+        setSearch({...search, page: current, perPage: pageSize});
+        setSearchParams({...search, page: `${current}`, perPage: `${pageSize}`});
+    }
 
     const deleteCategory = async( id:number)=>{
         const result = await categoryService.delete(id);
@@ -104,6 +127,17 @@ const CategoriesListPage: React.FC = () => {
                     </tbody>
                 </table>
             </Card>
+
+            <Pagination
+                current={search.page}
+                showSizeChanger
+                onChange={onPaginationChange}
+                defaultCurrent={1}
+                total={total}
+                pageSizeOptions={[2, 4, 8, 10]}
+                pageSize={search.perPage}
+                className=' mt-10  mr-14 self-end'
+            />
         </>
 
     )
