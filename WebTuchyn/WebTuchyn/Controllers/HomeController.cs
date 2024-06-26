@@ -20,7 +20,7 @@ namespace WebTuchyn.Controllers
                 new DogItemViewModel
                 {
                     Id = 1,
-                    Name = "“ÛÁ≥Í",
+                    Name = "–¢—É–∑—ñ–∫",
                     Image = "https://pereiaslav.city/upload/article/o_1e3mdfgt343m190f1ah4ffk6mb2h.jpg"
                 },
                 new DogItemViewModel
