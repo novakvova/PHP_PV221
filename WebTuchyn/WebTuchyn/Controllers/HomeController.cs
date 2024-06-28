@@ -1,36 +1,39 @@
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using WebTuchyn.Data;
 using WebTuchyn.Models;
 
 namespace WebTuchyn.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ILogger<HomeController> logger, 
+        TuchynDbConext tuchynDbConext, IMapper mapper) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
 
         public IActionResult Index()
         {
-            List<DogItemViewModel> dogItems = new List<DogItemViewModel>
-            {
-                new DogItemViewModel
-                {
-                    Id = 1,
-                    Name = "Тузік",
-                    Image = "https://pereiaslav.city/upload/article/o_1e3mdfgt343m190f1ah4ffk6mb2h.jpg"
-                },
-                new DogItemViewModel
-                {
-                    Id = 2,
-                    Name = "MiniPig",
-                    Image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdpUSONmGeV2apHfPoUJ5Q8E9VN7bkhml-ww&s"
-                },
-            };
-            return View(dogItems);
+            //List<DogItemViewModel> dogItems = new List<DogItemViewModel>
+            //{
+            //    new DogItemViewModel
+            //    {
+            //        Id = 1,
+            //        Name = "Тузік",
+            //        Image = "https://pereiaslav.city/upload/article/o_1e3mdfgt343m190f1ah4ffk6mb2h.jpg"
+            //    },
+            //    new DogItemViewModel
+            //    {
+            //        Id = 2,
+            //        Name = "MiniPig",
+            //        Image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdpUSONmGeV2apHfPoUJ5Q8E9VN7bkhml-ww&s"
+            //    },
+            //};
+            //return View(dogItems);
+            var model = tuchynDbConext.Dogs
+                .ProjectTo<DogItemViewModel>(mapper.ConfigurationProvider)
+                .ToList();
+            return View(model);
         }
 
         public IActionResult Privacy()

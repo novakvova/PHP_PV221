@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using WebTuchyn.Data;
+using WebTuchyn.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +8,8 @@ builder.Services.AddDbContext<TuchynDbConext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAutoMapper(typeof(AppMapProfile));
 
 var app = builder.Build();
 
