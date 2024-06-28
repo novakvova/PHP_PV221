@@ -26,4 +26,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.SeedData();
+
 app.Run();
