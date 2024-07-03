@@ -14,6 +14,9 @@ php artisan install:api
 
 php artisan serve
 
+php artisan make:factory CategoryFactory
+php artisan db:seed
+
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
