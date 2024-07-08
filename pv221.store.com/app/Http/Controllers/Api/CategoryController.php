@@ -5,40 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
-use Illuminate\Http\UploadedFile;
+use App\Helpers\ImageWorker;
 
 class CategoryController extends Controller
 {
-    protected string $upload;
-    protected $sizes = [50,150,300,600,1200];
-
-    protected function deteteImages(int $id){
-        $item = Category::find($id);
-        foreach ($this->sizes as $size) {
-            $filePath = public_path($this->upload.$size."_".$item->image);
-            if(file_exists( $filePath)){
-                unlink($filePath);
-            }
-        }
-    }
-
-    protected function saveImages( UploadedFile $file){
-        $fileName = uniqid() . '.webp';
-        $manager = new ImageManager(new Driver());
-        foreach ($this->sizes as $size) {
-            $imageSave = $manager->read($file);
-            $imageSave->scale(width: $size);
-            $path = public_path($this->upload.$size."_".$fileName);
-            $imageSave->toWebp()->save($path);
-        }
-        return $fileName;
-    }
-    public function __construct()
-    {
-        $this-> upload = env('UPLOAD_DIR');
-    }
     //по категоріях зробити пошук і пагінацію.
     public function getAll(Request $request) : \Illuminate\Http\Response //\Illuminate\Http\JsonResponse
     {
@@ -67,7 +37,7 @@ class CategoryController extends Controller
         }
         if ($request->hasFile('image') && $request->input('name') != '') {
             $file = $request->file('image');
-            $fileName = $this->saveImages($file);
+            $fileName = ImageWorker::save($file);
             $item = Category::create(['name' => $request->input('name') , 'image' => $fileName]);
             return response()->json($item, 201);
         }
@@ -87,8 +57,8 @@ class CategoryController extends Controller
         if($item && $request->input('name') != ''){
             if ( $request->hasFile('image') ) {
                 $file = $request->file('image');
-                $this->deteteImages($id);
-                $item->image = $this->saveImages($file);
+                ImageWorker::detete($id);
+                $item->image = ImageWorker::save($file);
             }
             $item->name = $request->input('name');
             $item->save();
@@ -103,7 +73,7 @@ class CategoryController extends Controller
 
     public function delete(int $id): \Illuminate\Http\JsonResponse
     {
-        $this->deteteImages($id);
+        ImageWorker::detete($id);
         Category::destroy($id);
         return response()->json(null, 204);
     }
